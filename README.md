@@ -1,2 +1,2 @@
-# d3chart
+# D3 Chart
 Based on D3
