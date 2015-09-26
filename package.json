@@ -1,0 +1,33 @@
+{
+  "name": "d3chart",
+  "version": "0.1.0",
+  "description": "www.d3chart.com",
+  "main": "main.js",
+  "publishConfig": {
+    "registry": "https://github.com/WeiFei365/d3chart.git"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulpfile.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WeiFei365/d3chart.git"
+  },
+  "author": "Wei Fei",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "browserify": "9.0.4",
+    "chalk": "^0.5.1",
+    "node-notifier": "^4.1.2",
+    "vinyl-source-stream": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-notify": "^2.2.0"
+  }
+}
