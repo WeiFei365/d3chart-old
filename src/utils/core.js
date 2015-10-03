@@ -15,6 +15,9 @@ core.isArray = function (val) {
 core.isNumber = function (val) {
 	return _.isNumber(val);
 };
+core.isFunction = function (val) {
+	return _.isFunction(val);
+};
 core.isString = function (val) {
 	return _.isString(val);
 };

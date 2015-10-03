@@ -19,7 +19,11 @@ var TreeMapHelper = function (os, dt) {
 			return this;
 		},
 		init: function (el) {
+			d3chart = new TreeMap();
 			return this;
+		},
+		getInstance: function () {
+			return d3chart;
 		},
 		setOptions: function (os, notMerge) {
 			return this;

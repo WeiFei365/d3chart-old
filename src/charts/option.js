@@ -11,6 +11,92 @@ var Option = {
 	data: []
 };
 
+//所有图表的 API 接口集
+//实现方式：
+//1. 完全覆盖: this.__proto__ = merge(interface.call(this), this.__proto__);
+//
+//2. 混合使用: this.__proto__ = merge(this.__proto__, interface.call(this, true, this.__proto__, false));
+var API_Interface = function (isMerge, proto, isFirst) {
+	var that = this;
+	var __proto__ = core.cloneDeep(proto) || {};
+
+	return {
+		_: function () {
+			delete this._;
+			return this;
+		},
+		init: function () {
+			isMerge && isFirst && core.isFunction(__proto__.init) && __proto__.init();
+
+			//TODO
+			console.log('init in interface');
+
+			isMerge && !isFirst && core.isFunction(__proto__.init) && __proto__.init();
+
+			return that;
+		},
+		update: function () {
+			isMerge && isFirst && core.isFunction(__proto__.update) && __proto__.update();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.update) && __proto__.update();
+
+			return that;
+		},
+		redraw: function () {
+			isMerge && isFirst && core.isFunction(__proto__.redraw) && __proto__.redraw();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.redraw) && __proto__.redraw();
+
+			return that;
+		},
+		setOption: function () {
+			isMerge && isFirst && core.isFunction(__proto__.setOption) && __proto__.setOption();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.setOption) && __proto__.setOption();
+
+			return that;
+		},
+		setTooltip: function () {
+			isMerge && isFirst && core.isFunction(__proto__.setTooltip) && __proto__.setTooltip();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.setTooltip) && __proto__.setTooltip();
+
+			return that;
+		},
+		bindEvents: function () {
+			isMerge && isFirst && core.isFunction(__proto__.bindEvents) && __proto__.bindEvents();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.bindEvents) && __proto__.bindEvents();
+
+			return that;
+		},
+		getHTML: function () {
+			isMerge && isFirst && core.isFunction(__proto__.getHTML) && __proto__.getHTML();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.getHTML) && __proto__.getHTML();
+		},
+		destroy: function () {
+			isMerge && isFirst && core.isFunction(__proto__.destroy) && __proto__.destroy();
+
+			//TODO
+			
+			isMerge && !isFirst && core.isFunction(__proto__.destroy) && __proto__.destroy();
+		}
+	}._();
+};
+
 module.exports = {
 	initOption: function (def, cus) {
 		//合并用户配置到默认配置
@@ -21,5 +107,6 @@ module.exports = {
 		core.merge(result, def);
 
 		return result;
-	}
+	},
+	API_Interface: API_Interface
 };
