@@ -1,4 +1,6 @@
 
+'use strict'
+
 	var CHART_ERROR = {
 		_: function () {
 			this.__proto__ = null;

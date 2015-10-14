@@ -1,5 +1,14 @@
 
+'use strict'
+
 var core = {};
+
+core.getSize = function (node) {
+	if (!this.isElement(node)) return [1, 1];
+
+	return [$(node).width(), $(node).height()];
+};
+
 core.merge = function (tar, sou) {
 	return _.merge(tar, sou);
 };
@@ -21,23 +30,30 @@ core.isFunction = function (val) {
 core.isString = function (val) {
 	return _.isString(val);
 };
-//return [上， 下， 左， 右]
-core.getCSSPadding = function (p) {
+//return [top， bottom， left， right]
+core.getCSSSize = function (val) {
 	var v = [0, 0, 0, 0];
-	if (!p) return v;
-	v = p.replace(/px/g, '').replace(/\s+/g, ' ').split(' ');
-	if (v.length == 0) v = [0, 0, 0, 0];
-	if (v.length == 1) v = [+v[0], +v[0], +v[0], +v[0]];
-	if (v.length == 2) v = [+v[0], +v[0], +v[1], +v[1]];
-	if (v.length == 3) v = [+v[0], +v[2], +v[1], +v[1]];
+	if (!val) return v;
+	v = val.replace(/px/g, '').replace(/\s+/g, ' ').split(' ');
+	switch (v.length) {
+		case 0:
+			v = [0, 0, 0, 0];
+			break;
+		case 1:
+			v = [+v[0], +v[0], +v[0], +v[0]];
+			break;
+		case 2:
+			v = [+v[0], +v[0], +v[1], +v[1]];
+			break;
+		case 3:
+			v = [+v[0], +v[2], +v[1], +v[1]];
+			break;
+		default:
+			v = [0, 0, 0, 0];
+			break;
+	}
 
 	return v;
-};
-core.getCSSBorderSize = function (b) {
-	var v = 0;
-	if (!b) return v;
-	v = b.match(/\d+px/);
-	return +(v ? v[0].replace(/px/, '') : 0);
 };
 
 module.exports = core;
