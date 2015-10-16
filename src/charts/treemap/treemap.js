@@ -1,6 +1,6 @@
 var core = require('../../utils/core.js');
 
-var buildAPI = require('../chart_api.js');
+var API = require('../chart_api.js');
 
 var getOptions = require('./default_options.js')
 
@@ -9,10 +9,10 @@ function TreeMap (element, data, options) {
 	this.options = getOptions(options);
 	this.data = data;
 	this.element = element;
+	this.type = 'treemap';
+	this.theme = 'default';
 
-	var that = this;
-
-	return new buildAPI(this, null);
+	return new API(this, null);
 }
 
 TreeMap.prototype.init = function () {

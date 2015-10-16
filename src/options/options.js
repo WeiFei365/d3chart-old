@@ -6,11 +6,9 @@ var options = {
 };
 
 var initOptions = function (custom) {
-	var options = core.cloneDeep(options);
+	var settings = core.cloneDeep(options);
 
-	core.merge(options, custom);
-
-	return options;
+	return core.merge(settings, custom);
 };
 
 module.exports = initOptions;
