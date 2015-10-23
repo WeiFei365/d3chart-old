@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf8">
+		<title>www.d3chart.com</title>
+		<style type="text/css">
+			#test *{
+				position: absolute;
+				cursor: pointer;
+			}
+		</style>
+		<script type="text/javascript" src="../plugins/d3.min.js"></script>
+		<script type="text/javascript" src="../plugins/lodash.js"></script>
+		<script type="text/javascript" src="../dist/d3.chart.js"></script>
+
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+	</head>
+	<body>
+		<div id='test' style="height: 400px; width: 100%;"></div>
+		<script type="text/javascript">
+			var $test = $('#test');
+			var scale = d3.scale.category20c();
+			var w = $test.width();
+			var h = $test.height();
+			var $el;
+			for (var i = 0; i < 200; i++) {
+				$el = $('<div></div>');
+				$el.css({
+					left: new Number(Math.random()).toFixed(2) * w,
+					top: new Number(Math.random()).toFixed(2) * h,
+					background: scale(i)
+				});
+				$el.text(i + ',' + i + ',' + i);
+				$test.append($el);
+			}
+
+			var tooltip = new Tooltip($test[0]);
+			$test.children().mouseenter(function (event) {
+				tooltip.show().setHTML($(this).html());
+			}).mouseleave(function (event) {
+				tooltip.hide();
+			});
+		</script>
+	</body>
+</html>
