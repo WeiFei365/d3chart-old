@@ -153,4 +153,11 @@ core.set = function (obj, keys, val, notMerge, splitFlag) {
 	}
 }
 
+core.hide = function (el) {
+	d3.select(el).style('display', 'none');
+};
+core.show = function (el) {
+	d3.select(el).style('display', 'block');
+};
+
 module.exports = core;

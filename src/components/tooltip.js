@@ -96,14 +96,15 @@ Tooltip.prototype._init = function () {
     var opts = that.options;
     var tools = that.tools = {};
 
-    tools.container = $('<div></div>');
-    tools.container.addClass(CLASS_NAME).attr('id', that.ID);
+    tools.container = d3.select(that.container).append('div');
+	tools.container
+		.classed(CLASS_NAME, true)
+		.attr('id', that.ID);
 	//不允许有相同逻辑的出现，因此变相调用配置达到初始化部分参数的效果
 	that._setOption('style', {});
-    $(that.container).append(tools.container);
 
-    tools.eventController = function (event) {
-        that._move(event);
+    tools.eventController = function () {
+        that._move(d3.event);
     };
 
     that._bindEvents()._trigger(false);
@@ -118,7 +119,9 @@ Tooltip.prototype._bindEvents = function () {
 
 	//先移除掉上次绑定的所有事件
 	if (that._lastEvents) {
-		$(that.container).unbind(that._lastEvents, tools.eventController);
+		for (var i = 0, arr = that._lastEvents, l = arr.length; i < l; i++) {
+			d3.select(that.container).on(arr[i], null);
+		}
 	}
 
 	//绑定新事件
@@ -128,7 +131,10 @@ Tooltip.prototype._bindEvents = function () {
 	} catch (e) {
 		names = defaultOptions.events.split(',');
 	}
-	$(that.container).bind(that._lastEvents = names.join(' '), tools.eventController);
+	that._lastEvents = names;
+	for (var i = 0, l = names.length; i < l; i++) {
+		d3.select(that.container).on(names[i], tools.eventController);
+	}
 
 	return this;
 };
@@ -144,15 +150,11 @@ Tooltip.prototype._move = function (event) {
 		return this;
 	}
 
-	var position = core.offset(event.target, that.container);
+	var position = {
+		left: event.x,
+		top: event.y
+	};
 
-	position.left += event.offsetX + 10;
-	position.top += event.offsetY + 10;
-
-	if (core.isSVGElement(event.target)) {
-		position.left += event.target.offsetLeft;
-		position.top += event.target.offsetTop;
-	}
 	var func = opts.position;
 	var cusPos;
 	if (core.isFunction(func)) {
@@ -162,10 +164,15 @@ Tooltip.prototype._move = function (event) {
 			position.top = cusPos[1];
 		}
 	}
+	position.left += 'px';
+	position.top += 'px';
+
 	if (core.isNumber(opts.animation) && opts.animation > 0) {
-		tools.container.stop().animate(position, opts.animation);
+		tools.container
+			.transition().duration(opts.animation)
+			.style(position);
 	} else {
-		tools.container.css(position);
+		tools.container.style(position);
 	}
 
 	return this;
@@ -180,14 +187,14 @@ Tooltip.prototype._trigger = function (isShow) {
 	that.hideTimer && clearTimeout(that.hideTimer);
 
 	if (isShow) {
-		tools.container.show();
+		core.show(tools.container[0][0]);
 	} else {
 		if (core.isNumber(opts.hideDelay)) {
 			that.hideTimer = setTimeout(function () {
-				tools.container.hide();
+				core.hide(tools.container[0][0]);
 			}, opts.hideDelay);
 		} else {
-			tools.container.hide();
+			core.hide(tools.container[0][0]);
 		}
 	}
 
@@ -206,7 +213,7 @@ Tooltip.prototype._setOption = function (keys, value) {
 		case 'style':
 			//防止用户破坏 options 对象
 			!core.isObject(value) && (this.options.style = TooltipOptions(null, {style: {}}));
-			this.tools.container.css(this.options.style);
+			this.tools.container.style(this.options.style);
 			break;
 		case 'style.*':
 			//执行全部更新
